@@ -47,6 +47,8 @@ BAR = $(shell printf "%`expr $(BARC) '*' 100 / $(BART)`s" | tr ' ' '=')
 
 #--------------------------------------------------------------------#
 
+.PHONY: all clean fclean re
+
 all		:	$(LIBFT)/libft.a $(O_DIRS) $(NAME)
 
 $(LIBFT)/libft.a:
@@ -60,12 +62,11 @@ $(NAME)	:	$(O_FILES)
 			@echo "$(U)$(C)[BUILD]\033[0;32m"
 			@$(CC) $(FLAGS) -o $(NAME) $(O_FILES) $(LIB)
 			@echo "$(SKIP)$(U)$(C)[BUILD  :\033[1;32m DONE$(C)]\033[0m\033[K"
-			@echo "\n\033[34m[<%= project_name.upcase %>] \t\033[32m[ <%= project_name %> CREATE ]\033[0m"
 
 $(O_DIR)%.o: $(C_DIR)%.c $(H_FILES)
 			@echo "$(U)$(C)[COMPILE: \033[1;31m$<\033[A\033[0m"
 			@echo "\033[0;32m"
-			@gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+			@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 			@printf "\033[1;31m[%-100s] %s%%\n" $(BAR) `echo $W|wc -w|tr -d ' '`
 			@echo "$(SKIP)\033[A\033[2K$(SKIP)"
 			
@@ -73,7 +74,6 @@ clean	:
 			@make -C $(LIBFT) clean
 			@rm -rf $(O_FILES)
 			@echo "$(U)$(C)[CLEAN]\033[0;32m"
-			@echo "$(SKIP)$(U)$(C)[CLEAN:\033[1;32m   DONE$(C)]\033[0m"
 
 fclean	:	clean
 			@make -C $(LIBFT) fclean
@@ -84,6 +84,7 @@ fclean	:	clean
 re		:	fclean all
 
 #------------------MY RULES ---------------------------------#
+.PHONY: exe norme gdb correc
 
 exe		:	all
 			@./$(NAME)
